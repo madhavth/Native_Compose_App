@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SampleApplication</string>
+    <string name="please_grant_notification_permission">Please grant notification permission</string>
 </resources>

@@ -5,6 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.sampleapplication.core.data.helpers.DataStoreHelper
+import com.example.sampleapplication.core.domain.entities.ChannelData
+import com.example.sampleapplication.core.domain.entities.NotificationData
+import com.example.sampleapplication.core.presentation.helpers.NotificationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,8 +21,24 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     val app: Application,
-    private val dataStoreHelper: DataStoreHelper
+    private val dataStoreHelper: DataStoreHelper,
+    private val notificationHelper: NotificationHelper
 ) : AndroidViewModel(app) {
+
+    init {
+        notificationHelper.showNotification(
+            NotificationData(
+                title = "This is the title",
+                message = "This is the message",
+                notificationId = 1,
+                channelData = ChannelData(
+                    channelId = "channelId",
+                    name = "channelName",
+                    description = "channelDescription"
+                )
+            )
+        )
+    }
 
     private val _counterFlow = dataStoreHelper.counterFlow
 
