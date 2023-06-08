@@ -1,5 +1,9 @@
 package com.example.sampleapplication.features.main.presentation.page
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,25 +39,43 @@ fun HomeScreen(
     val homeViewModel: HomeViewModel = hiltViewModel()
     val counter = homeViewModel.counter.collectAsState()
 
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = {
+            homeViewModel.notificationDone(it)
+        })
+
     Column(
 //        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        Column(modifier = Modifier.weight(1f),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Button(onClick = {
                 homeViewModel.addCounter()
             }) {
                 Text(text = "Home value ${counter.value}")
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    homeViewModel.notificationDone(true)
+                }
+            ) {
+                Text(text = "Show notification")
+            }
         }
 
         Box(
-            modifier = Modifier.height(200.dp)
-                .fillMaxWidth().background(Color.Blue)
+            modifier = Modifier
+                .height(200.dp)
+                .fillMaxWidth()
+                .background(Color.Blue)
         )
     }
 }

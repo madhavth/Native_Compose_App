@@ -26,18 +26,7 @@ class HomeViewModel @Inject constructor(
 ) : AndroidViewModel(app) {
 
     init {
-        notificationHelper.showNotification(
-            NotificationData(
-                title = "This is the title",
-                message = "This is the message",
-                notificationId = 1,
-                channelData = ChannelData(
-                    channelId = "channelId",
-                    name = "channelName",
-                    description = "channelDescription"
-                )
-            )
-        )
+        notificationDone(true)
     }
 
     private val _counterFlow = dataStoreHelper.counterFlow
@@ -52,5 +41,23 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             dataStoreHelper.changeCounterValue(counter.value + 1)
         }
+    }
+
+    fun notificationDone(granted: Boolean) {
+        if(!granted) return
+
+        notificationHelper.showNotification(
+            NotificationData(
+                title = "This is the title",
+                message = "This is the message",
+                notificationId = 1,
+                channelData = ChannelData(
+                    channelId = "channelId",
+                    name = "channelName",
+                    description = "channelDescription"
+                )
+            )
+        )
+
     }
 }
