@@ -28,6 +28,10 @@ android {
     namespace 'com.example.sampleapplication'
     compileSdk 34
 
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "com.example.sampleapplication"
         minSdk 24

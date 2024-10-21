@@ -6,7 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.sampleapplication.R
 import com.example.sampleapplication.features.NavGraphs
 import com.example.sampleapplication.features.destinations.SplashScreenDestination
 import com.example.sampleapplication.ui.theme.SampleApplicationTheme
@@ -22,13 +25,19 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            SampleApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                    DestinationsNavHost(navGraph = NavGraphs.root,
-                        )
+        setContentView(R.layout.activity_main)
+        findViewById<ComposeView>(R.id.compose_view).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SampleApplicationTheme {
+                    // A surface container using the 'background' color from the theme
+                    DestinationsNavHost(
+                        navGraph = NavGraphs.root,
+                    )
+                }
             }
         }
+
     }
 }
 
